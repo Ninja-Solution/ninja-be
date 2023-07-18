@@ -1,5 +1,6 @@
 package ninja.be.dto.user.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 import ninja.be.entity.User;
