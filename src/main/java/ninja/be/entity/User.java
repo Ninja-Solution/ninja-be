@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ninja.be.entity.base.BaseTimeEntity;
+import ninja.be.entity.embeddables.Location;
+import ninja.be.entity.enums.Authority;
 
 import javax.persistence.*;
 import java.util.List;
@@ -13,7 +15,8 @@ import java.util.List;
 @NoArgsConstructor
 public class User extends BaseTimeEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
 
@@ -30,13 +33,17 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Incident> incidents;
 
+    @Enumerated(EnumType.STRING)
+    private Authority authority;
+
     @Builder
-    public User(Long id, String email, String password, String username, Location location, List<Incident> incidents) {
+    public User(Long id, String email, String password, String username, Location location, List<Incident> incidents, Authority authority) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.username = username;
         this.location = location;
         this.incidents = incidents;
+        this.authority = authority;
     }
 }

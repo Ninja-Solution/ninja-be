@@ -1,0 +1,23 @@
+### 회원가입
+POST http://localhost:8080/api/user/signup
+Content-Type: application/json
+
+{
+  "email": "qqq@qqq.com",
+  "password": "qwer1234",
+  "username": "준",
+  "location": {
+    "city": "서울특별시",
+    "district": "South Korea",
+    "ward": "Gangnam-gu"
+  }
+}
+
+### 로그인
+POST http://localhost:8080/api/user/login
+Content-Type: application/json
+
+{
+  "email": "qqq@qqq.com",
+  "password": "qwer1234"
+}
