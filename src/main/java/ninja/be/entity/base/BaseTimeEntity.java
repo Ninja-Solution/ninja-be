@@ -1,4 +1,4 @@
-package ninja.be.entity;
+package ninja.be.entity.base;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;

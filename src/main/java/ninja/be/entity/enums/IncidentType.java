@@ -1,4 +1,4 @@
-package ninja.be.entity;
+package ninja.be.entity.enums;
 
 public enum IncidentType {
     LANDSLIDE,
