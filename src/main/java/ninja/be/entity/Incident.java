@@ -14,7 +14,6 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@DynamicInsert
 @NoArgsConstructor
 public class Incident extends BaseTimeEntity {
     @Id
@@ -34,20 +33,19 @@ public class Incident extends BaseTimeEntity {
     @Embedded
     private Location location;
 
-    @ColumnDefault("1")
     private int incidentCount;
 
     @Embedded
     private Coordinate coordinate;
 
     @Builder
-    public Incident(Long id, User user, String title, IncidentType type, Location location, int incidentCount, Coordinate coordinate) {
+    public Incident(Long id, User user, String title, IncidentType type, Location location, Coordinate coordinate) {
         this.id = id;
         this.user = user;
         this.title = title;
         this.type = type;
         this.location = location;
-        this.incidentCount = incidentCount;
+        this.incidentCount = 1;
         this.coordinate = coordinate;
     }
 

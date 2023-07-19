@@ -2,7 +2,7 @@ package ninja.be.dto.incident.request;
 
 import lombok.Builder;
 import lombok.Data;
-import ninja.be.entity.User;
+import lombok.NoArgsConstructor;
 import ninja.be.entity.embeddables.Coordinate;
 import ninja.be.entity.embeddables.Location;
 import ninja.be.entity.enums.IncidentType;
@@ -11,9 +11,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data
+@NoArgsConstructor
 public class IncidentPostingRequest {
-    @NotBlank(message = "유저 정보가 존재해야 합니다.")
-    private User user;
     @NotBlank(message = "제목을 입력하세요.")
     private String title;
     @NotNull(message = "타입을 입력하세요.")
@@ -24,8 +23,7 @@ public class IncidentPostingRequest {
     private Coordinate coordinate;
 
     @Builder
-    public IncidentPostingRequest(User user, String title, IncidentType type, Location location, Coordinate coordinate) {
-        this.user = user;
+    public IncidentPostingRequest(String title, IncidentType type, Location location, Coordinate coordinate) {
         this.title = title;
         this.type = type;
         this.location = location;
