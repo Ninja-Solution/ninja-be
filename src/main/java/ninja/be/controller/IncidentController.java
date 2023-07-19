@@ -10,6 +10,10 @@ import lombok.RequiredArgsConstructor;
 import ninja.be.dto.incident.request.IncidentPostingRequest;
 import ninja.be.dto.incident.response.IncidentResponse;
 import ninja.be.service.IncidentService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -43,8 +47,10 @@ public class IncidentController {
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = Error.class)))
     })
     @GetMapping
-    public ResponseEntity<List<IncidentResponse>> getIncidentByLocation(@AuthenticationPrincipal final String userId) {
-        List<IncidentResponse> incidentResponses = incidentService.getIncidentByLocation(Long.valueOf(userId));
+    public ResponseEntity<Page<IncidentResponse>> getIncidentByLocation(@AuthenticationPrincipal final String userId, @RequestParam(defaultValue = "0") int page,
+                                                                        @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate"));
+        Page<IncidentResponse> incidentResponses = incidentService.getIncidentByLocation(Long.valueOf(userId), pageable);
         return ResponseEntity.ok(incidentResponses);
     }
 }
