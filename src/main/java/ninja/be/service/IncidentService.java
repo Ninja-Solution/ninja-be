@@ -7,12 +7,15 @@ import ninja.be.entity.Incident;
 import ninja.be.entity.User;
 import ninja.be.entity.embeddables.Coordinate;
 import ninja.be.exception.user.UserNotFoundException;
+import ninja.be.repository.EmitterRepository;
 import ninja.be.repository.IncidentRepository;
 import ninja.be.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,6 +24,7 @@ import java.util.List;
 public class IncidentService {
     private final IncidentRepository incidentRepository;
     private final UserRepository userRepository;
+    private final SseService sseService;
 
     public Long createIncident(Long userId, IncidentPostingRequest request) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
@@ -35,7 +39,13 @@ public class IncidentService {
 
         incidentRepository.save(incident);
 
-        return incident.getId();
+        IncidentResponse incidentResponse = IncidentResponse.from(incident);
+
+        String key = (user.getLocation().getCity() + user.getLocation().getDistrict() + user.getLocation().getWard()).replace(" ", "");
+
+        sseService.notify(key, incidentResponse);
+
+        return incidentResponse.getId();
     }
 
     public Long saveIfNotDuplicate(Long userId, IncidentPostingRequest request) {
