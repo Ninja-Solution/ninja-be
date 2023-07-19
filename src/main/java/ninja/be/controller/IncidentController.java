@@ -66,17 +66,4 @@ public class IncidentController {
         Page<IncidentResponse> incidentResponses = incidentService.getIncidentByLocation(Long.valueOf(userId), pageable);
         return ResponseEntity.ok(incidentResponses);
     }
-
-    @Operation(summary = "사건 sse 구독")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "구독 성공"),
-            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = Error.class)))
-    })
-    @GetMapping(value = "/sse/subscribe", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter subscribeIncident(@AuthenticationPrincipal final String userId,
-                                        @RequestParam String city,
-                                        @RequestParam String district) {
-        String key = (city + district).replace(" ", "");
-        return sseService.subscribe(key);
-    }
 }

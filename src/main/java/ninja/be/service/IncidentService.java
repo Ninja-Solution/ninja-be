@@ -38,9 +38,7 @@ public class IncidentService {
 
         IncidentResponse incidentResponse = IncidentResponse.from(incident);
 
-        String key = (user.getLocation().getCity() + user.getLocation().getDistrict()).replace(" ", "");
-
-        sseService.notify(key, incidentResponse);
+        sseService.notify(incidentResponse);
 
         return incidentResponse.getId();
     }

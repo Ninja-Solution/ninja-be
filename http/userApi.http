@@ -8,7 +8,7 @@ Content-Type: application/json
   "username": "준",
   "location": {
     "city": "서울특별시",
-    "district": "South Korea",
+    "district": "South Korea"
   }
 }
 

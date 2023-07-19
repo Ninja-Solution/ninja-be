@@ -23,4 +23,8 @@ public class EmitterRepository {
     public SseEmitter get(String key) {
         return emitters.get(key);
     }
+
+    public Map<String, SseEmitter> getAll() {
+        return emitters;
+    }
 }
