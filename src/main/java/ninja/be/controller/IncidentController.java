@@ -66,9 +66,8 @@ public class IncidentController {
     @GetMapping(value = "/sse/subscribe", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter subscribeIncident(@AuthenticationPrincipal final String userId,
                                         @RequestParam String city,
-                                        @RequestParam String district,
-                                        @RequestParam String ward) {
-        String key = (city + district + ward).replace(" ", "");
+                                        @RequestParam String district) {
+        String key = (city + district).replace(" ", "");
         return sseService.subscribe(key);
     }
 }

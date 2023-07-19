@@ -13,5 +13,4 @@ import javax.persistence.Embeddable;
 public class Location {
     private String city;
     private String district;
-    private String ward;
 }

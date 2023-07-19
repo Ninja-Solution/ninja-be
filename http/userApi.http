@@ -9,7 +9,6 @@ Content-Type: application/json
   "location": {
     "city": "서울특별시",
     "district": "South Korea",
-    "ward": "Gangnam-gu"
   }
 }
 
@@ -32,7 +31,6 @@ Content-Type: application/json
   "location": {
     "city": "서울특별시",
     "district": "South Korea",
-    "ward": "Gangnam-gu"
   },
   "coordinate": {
     "x": 12,
