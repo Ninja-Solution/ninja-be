@@ -7,15 +7,12 @@ import ninja.be.entity.Incident;
 import ninja.be.entity.User;
 import ninja.be.entity.embeddables.Coordinate;
 import ninja.be.exception.user.UserNotFoundException;
-import ninja.be.repository.EmitterRepository;
 import ninja.be.repository.IncidentRepository;
 import ninja.be.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -74,5 +71,11 @@ public class IncidentService {
         Page<Incident> incidents = incidentRepository.findByLocationAndCreatedDateAfter(user.getLocation(), threeDaysAgo, pageable);
 
         return incidents.map(IncidentResponse::from);
+    }
+
+    public Page<IncidentResponse> findAllPaging(Pageable pageable) {
+        Page<Incident> all = incidentRepository.findAll(pageable);
+
+        return all.map(IncidentResponse::from);
     }
 }

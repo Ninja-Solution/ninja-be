@@ -33,6 +33,15 @@ public class IncidentController {
     private final IncidentService incidentService;
     private final SseService sseService;
 
+    //테스트 용
+    @GetMapping("/all")
+    public ResponseEntity<Page<IncidentResponse>> getAll(@RequestParam(defaultValue = "0") int page,
+                                                         @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate"));
+        Page<IncidentResponse> allPaging = incidentService.findAllPaging(pageable);
+        return ResponseEntity.ok(allPaging);
+    }
+
     @Operation(summary = "사건 등록", description = "사건 등록 메서드입니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "등록 성공", content = @Content(schema = @Schema(implementation = Long.class))),
