@@ -50,7 +50,6 @@ public class IncidentController {
     @PostMapping
     public ResponseEntity<Long> createIncident(@AuthenticationPrincipal final String userId, @Valid @RequestBody final IncidentPostingRequest incidentPostingRequest) {
         Long incidentId = incidentService.saveIfNotDuplicate(Long.valueOf(userId), incidentPostingRequest);
-
         return ResponseEntity.ok(incidentId);
     }
 

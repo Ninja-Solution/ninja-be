@@ -6,6 +6,7 @@ import ninja.be.dto.incident.response.IncidentResponse;
 import ninja.be.entity.Incident;
 import ninja.be.entity.User;
 import ninja.be.entity.embeddables.Coordinate;
+import ninja.be.entity.embeddables.Location;
 import ninja.be.exception.user.UserNotFoundException;
 import ninja.be.repository.IncidentRepository;
 import ninja.be.repository.UserRepository;
@@ -23,14 +24,14 @@ public class IncidentService {
     private final UserRepository userRepository;
     private final SseService sseService;
 
-    public Long createIncident(Long userId, IncidentPostingRequest request) {
+    public Long createIncident(Long userId, IncidentPostingRequest request, Location location, String title) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
         Incident incident = Incident.builder()
                 .user(user)
-                .title(request.getTitle())
+                .title(title)
                 .type(request.getType())
-                .location(request.getLocation())
+                .location(location)
                 .coordinate(request.getCoordinate())
                 .build();
 
@@ -44,6 +45,9 @@ public class IncidentService {
     }
 
     public Long saveIfNotDuplicate(Long userId, IncidentPostingRequest request) {
+        Location location = getLocation(request);
+
+        String title = getTitle(request, location);
         Coordinate minXy = new Coordinate(request.getCoordinate().getX() - 0.00003, request.getCoordinate().getY() - 0.00003);
         Coordinate maxXy = new Coordinate(request.getCoordinate().getX() + 0.00003, request.getCoordinate().getY() + 0.00003);
 
@@ -59,8 +63,18 @@ public class IncidentService {
             }
             throw new RuntimeException("이미 중복된 사건입니다.");
         } else {
-            return createIncident(userId, request);
+            return createIncident(userId, request,location,title);
         }
+    }
+
+    private String getTitle(IncidentPostingRequest request, Location location) {
+        return location.getCity()+" "+ location.getDistrict()+" "+"에서 [" + request.getType().getIncident() + "] 발생";
+    }
+
+    private Location getLocation(IncidentPostingRequest request) {
+        String address = request.getAddress();
+        String[] s = address.split(" ");
+        return new Location(s[1], s[2]);
     }
 
     public Page<IncidentResponse> getIncidentByLocation(Long userId, Pageable pageable) {

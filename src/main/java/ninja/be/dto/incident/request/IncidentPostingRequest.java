@@ -13,20 +13,18 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 public class IncidentPostingRequest {
-    @NotBlank(message = "제목을 입력하세요.")
     private String title;
     @NotNull(message = "타입을 입력하세요.")
     private IncidentType type;
     @NotNull(message = "주소을 입력하세요.")
-    private Location location;
-    @NotNull(message = "좌표을 입력하세요.")
+    private String address;
     private Coordinate coordinate;
 
     @Builder
-    public IncidentPostingRequest(String title, IncidentType type, Location location, Coordinate coordinate) {
+    public IncidentPostingRequest(String title, IncidentType type, String address, Coordinate coordinate) {
         this.title = title;
         this.type = type;
-        this.location = location;
+        this.address = address;
         this.coordinate = coordinate;
     }
 }
