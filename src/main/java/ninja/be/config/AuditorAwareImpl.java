@@ -1,6 +1,5 @@
 package ninja.be.config;
 
-import ninja.be.entity.User;
 import ninja.be.repository.UserRepository;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;

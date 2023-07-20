@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 public class BoardForm{
+    private long id;
     private String title;
     private String content;
     private String createdBy;
@@ -16,7 +17,8 @@ public class BoardForm{
     private LocalDateTime lastModifiedDate;
 
     @Builder
-    public BoardForm(String title, String content, String createdBy, LocalDateTime createdDate, LocalDateTime lastModifiedDate) {
+    public BoardForm(long id, String title, String content, String createdBy, LocalDateTime createdDate, LocalDateTime lastModifiedDate) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.createdBy = createdBy;
