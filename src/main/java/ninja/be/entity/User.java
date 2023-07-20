@@ -48,4 +48,8 @@ public class User extends BaseTimeEntity {
         this.incidents = incidents;
         this.authority = authority;
     }
+
+    public void updateUser(String password, String username, Location location){
+
+    }
 }
