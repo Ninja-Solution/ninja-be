@@ -5,6 +5,10 @@ spring:
       ddl-auto: update
     show-sql: true
     defer-datasource-initialization: true
+    properties:
+      hibernate:
+        default_batch_fetch_size: 100
+
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
