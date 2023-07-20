@@ -26,6 +26,7 @@ public class BoardController {
     @GetMapping("/all")
     public ResponseEntity<Page<BoardForm>> allBoard(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(boardService.findAll(pageable).map(board -> BoardForm.builder()
+                .id(board.getId())
                 .title(board.getTitle())
                 .content(board.getContent())
                 .createdBy(board.getCreatedBy())
@@ -47,6 +48,7 @@ public class BoardController {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(BoardForm.builder()
+                .id(board.getId())
                 .title(board.getTitle())
                 .content(board.getContent())
                 .createdBy(board.getCreatedBy())
