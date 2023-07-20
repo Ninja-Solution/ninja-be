@@ -34,7 +34,7 @@ public class SseController {
 //                                        @RequestParam String district
     ) {
 //        String key = (city + district).replace(" ", "");
-        String key = UUID.randomUUID().toString();
-        return sseService.subscribe(key);
+//        String key = UUID.randomUUID().toString();
+        return sseService.subscribe(userId);
     }
 }
