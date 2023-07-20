@@ -63,12 +63,12 @@ public class IncidentService {
             }
             throw new RuntimeException("이미 중복된 사건입니다.");
         } else {
-            return createIncident(userId, request,location,title);
+            return createIncident(userId, request, location, title);
         }
     }
 
     private String getTitle(IncidentPostingRequest request, Location location) {
-        return location.getCity()+" "+ location.getDistrict()+" "+"에서 [" + request.getType().getIncident() + "] 발생";
+        return location.getCity() + " " + location.getDistrict() + "에서 [" + request.getType().getIncident() + "] 발생";
     }
 
     private Location getLocation(IncidentPostingRequest request) {
