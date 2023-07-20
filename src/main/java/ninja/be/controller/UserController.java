@@ -31,10 +31,13 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = Long.class))),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = Error.class)))
     })
-    @PostMapping
+    @GetMapping
     public ResponseEntity<UserResponse> findByUserID(@AuthenticationPrincipal final String userId) {
         UserResponse user = userService.findByUserId(Long.valueOf(userId));
         return ResponseEntity.ok(user);
     }
+
+
+
 
 }
