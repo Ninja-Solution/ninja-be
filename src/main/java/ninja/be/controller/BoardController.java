@@ -1,5 +1,10 @@
 package ninja.be.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import ninja.be.dto.board.BoardForm;
@@ -22,7 +27,11 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "board", description = "BOARD 관련")
 public class BoardController {
     private final BoardService boardService;
-
+    @Operation(summary = "모든 게시판 조회", description = "모든 게시판 조회 메서드입니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = Long.class))),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = Error.class)))
+    })
     @GetMapping("/all")
     public ResponseEntity<Page<BoardForm>> allBoard(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(boardService.findAll(pageable).map(board -> BoardForm.builder()
@@ -35,12 +44,22 @@ public class BoardController {
                 .build()));
     }
 
+    @Operation(summary = "게시판 생성", description = "게시판 생성 메서드입니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "게시판 생성 성공", content = @Content(schema = @Schema(implementation = Long.class))),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = Error.class)))
+    })
     @PostMapping("/create")
     public ResponseEntity<String> createBoard(@RequestBody BoardForm boardForm) {
         boardService.save(boardForm);
         return ResponseEntity.ok("success");
     }
 
+    @Operation(summary = "게시판 조회", description = "게시판 조회 메서드입니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = Long.class))),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = Error.class)))
+    })
     @GetMapping("/{id}")
     public ResponseEntity<BoardForm> getBoard(@PathVariable("id") long id) {
         Board board = boardService.findById(id);
@@ -57,6 +76,11 @@ public class BoardController {
                 .build());
     }
 
+    @Operation(summary = "게시판 변경", description = "게시판 변경 메서드입니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "변경 성공", content = @Content(schema = @Schema(implementation = Long.class))),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = Error.class)))
+    })
     @PutMapping("/{id}")
     public ResponseEntity<String> updateBoard(@PathVariable("id") long id,
                                              @AuthenticationPrincipal String userId,
@@ -67,6 +91,11 @@ public class BoardController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(summary = "댓글 변경", description = "댓글 변경 메서드입니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "변경 성공", content = @Content(schema = @Schema(implementation = Long.class))),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = Error.class)))
+    })
     @PutMapping("/{id}/comment")
     public ResponseEntity<String> updateBoard(@PathVariable("id") long id, @RequestBody CommentForm comment) {
         if (!boardService.addComment(id, comment)) {
@@ -75,6 +104,11 @@ public class BoardController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(summary = "게시판 삭제", description = "게시판 삭제 메서드입니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "삭제 성공", content = @Content(schema = @Schema(implementation = Long.class))),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = Error.class)))
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteBoard(@PathVariable("id") long id, @AuthenticationPrincipal String userId) {
         if (!boardService.deleteById(id, userId)) {
