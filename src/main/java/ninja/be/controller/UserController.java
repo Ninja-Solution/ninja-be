@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import ninja.be.dto.incident.request.IncidentPostingRequest;
+import ninja.be.dto.user.response.UserResponse;
 import ninja.be.entity.User;
 import ninja.be.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -31,8 +32,8 @@ public class UserController {
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = Error.class)))
     })
     @PostMapping
-    public ResponseEntity<User> findByUserID(@AuthenticationPrincipal final String userId) {
-        User user = userService.findByUserId(Long.valueOf(userId));
+    public ResponseEntity<UserResponse> findByUserID(@AuthenticationPrincipal final String userId) {
+        UserResponse user = userService.findByUserId(Long.valueOf(userId));
         return ResponseEntity.ok(user);
     }
 
