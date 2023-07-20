@@ -8,8 +8,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import ninja.be.dto.incident.request.IncidentPostingRequest;
+import ninja.be.dto.user.request.UserUpdateRequest;
 import ninja.be.dto.user.response.UserResponse;
-import ninja.be.entity.User;
 import ninja.be.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -37,7 +37,16 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-
+    @Operation(summary = "유저 정보 조회", description = "유저 정보 조회 메서드입니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = Long.class))),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = Error.class)))
+    })
+    @PutMapping
+    public ResponseEntity<Void> updateUser(@AuthenticationPrincipal final String userId,@Valid @RequestBody final UserUpdateRequest userUpdateRequest) {
+       userService.updateUser(Long.valueOf(userId),userUpdateRequest);
+        return ResponseEntity.ok().build();
+    }
 
 
 }
