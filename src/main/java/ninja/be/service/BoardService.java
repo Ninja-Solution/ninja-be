@@ -5,7 +5,9 @@ import ninja.be.dto.board.BoardForm;
 import ninja.be.dto.comment.CommentForm;
 import ninja.be.entity.Board;
 import ninja.be.entity.Comment;
+import ninja.be.entity.User;
 import ninja.be.repository.BoardRepository;
+import ninja.be.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class BoardService {
     private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
 
     public Page<Board> findAll(Pageable pageable) {
         return boardRepository.findAll(pageable);
@@ -26,7 +29,11 @@ public class BoardService {
 
     public boolean deleteById(long id, String deleteUser) {
         Board board = boardRepository.findById(id);
-        if (board == null || board.getCreatedBy().equals(deleteUser)) {
+        if (board == null) {
+            return false;
+        }
+        User user = userRepository.findByUsername(board.getCreatedBy());
+        if (user.getId() != Long.parseLong(deleteUser)) {
             return false;
         }
         boardRepository.deleteById(id);
@@ -44,7 +51,11 @@ public class BoardService {
     @Transactional
     public boolean update(long id, String modifyUser, BoardForm boardForm) {
         Board board = boardRepository.findById(id);
-        if (board == null || board.getCreatedBy().equals(modifyUser)) {
+        if (board == null) {
+            return false;
+        }
+        User user = userRepository.findByUsername(board.getCreatedBy());
+        if (user.getId() != Long.parseLong(modifyUser)) {
             return false;
         }
         board.updateBoard(boardForm.getTitle(), boardForm.getContent());
