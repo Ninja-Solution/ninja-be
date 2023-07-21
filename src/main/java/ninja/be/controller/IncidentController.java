@@ -10,19 +10,16 @@ import lombok.RequiredArgsConstructor;
 import ninja.be.dto.incident.request.IncidentPostingRequest;
 import ninja.be.dto.incident.response.IncidentResponse;
 import ninja.be.service.IncidentService;
-import ninja.be.service.SseService;
+import ninja.be.service.FluxService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/incident")
@@ -31,7 +28,7 @@ import java.util.List;
 @Tag(name = "incident", description = "사건 관련")
 public class IncidentController {
     private final IncidentService incidentService;
-    private final SseService sseService;
+    private final FluxService fluxService;
 
     //테스트 용
     @GetMapping("/all")

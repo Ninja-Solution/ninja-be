@@ -22,7 +22,7 @@ import java.util.List;
 public class IncidentService {
     private final IncidentRepository incidentRepository;
     private final UserRepository userRepository;
-    private final SseService sseService;
+    private final FluxService fluxService;
 
     public Long createIncident(Long userId, IncidentPostingRequest request, Location location, String title) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
@@ -39,7 +39,7 @@ public class IncidentService {
 
         IncidentResponse incidentResponse = IncidentResponse.from(incident);
 
-        sseService.notify(incidentResponse);
+        fluxService.notify(incidentResponse);
 
         return incidentResponse.getId();
     }

@@ -45,6 +45,8 @@ dependencies {
 
 	testImplementation 'org.mockito:mockito-core'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	implementation 'io.projectreactor:reactor-core'
 }
 
 tasks.named('test') {
