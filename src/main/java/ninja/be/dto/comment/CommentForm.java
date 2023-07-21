@@ -9,13 +9,15 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 public class CommentForm {
+    private long id;
     private String content;
     private String createdBy;
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
 
     @Builder
-    public CommentForm(String content, String createdBy, LocalDateTime createdDate, LocalDateTime lastModifiedDate) {
+    public CommentForm(long id, String content, String createdBy, LocalDateTime createdDate, LocalDateTime lastModifiedDate) {
+        this.id = id;
         this.content = content;
         this.createdBy = createdBy;
         this.createdDate = createdDate;

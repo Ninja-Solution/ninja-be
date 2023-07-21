@@ -25,6 +25,7 @@ public class CommentController {
     public ResponseEntity<Page<CommentForm>> getComment(@PathVariable("id") long id,
                                                     @PageableDefault Pageable pageable) {
         return ResponseEntity.ok(commentService.findAllById(id, pageable).map(comment -> CommentForm.builder()
+                .id(comment.getId())
                 .content(comment.getContent())
                 .createdBy(comment.getCreatedBy())
                 .createdDate(comment.getCreatedDate())
