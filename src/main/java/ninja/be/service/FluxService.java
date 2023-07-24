@@ -12,7 +12,6 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class FluxService {
-    private final FluxRepository fluxRepository;
     private final Map<String, FluxSink<Object>> fluxSinkMap = new HashMap<>();
 
     public Flux<Object> subscribe(String key) {
