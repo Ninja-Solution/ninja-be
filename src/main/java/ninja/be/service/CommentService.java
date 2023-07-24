@@ -22,11 +22,7 @@ public class CommentService {
 
     public boolean deleteById(long id, String deleteUser) {
         Comment comment = commentRepository.findById(id);
-        if (comment == null) {
-            return false;
-        }
-        User user = userRepository.findByUsername(comment.getCreatedBy());
-        if (user.getId() != Long.parseLong(deleteUser)) {
+        if (comment == null || comment.getCreater() != Long.parseLong(deleteUser)) {
             return false;
         }
         commentRepository.deleteById(id);
@@ -36,11 +32,7 @@ public class CommentService {
     @Transactional
     public boolean update(long id, String content, String modifyUser) {
         Comment comment = commentRepository.findById(id);
-        if (comment == null) {
-            return false;
-        }
-        User user = userRepository.findByUsername(comment.getCreatedBy());
-        if (user.getId() != Long.parseLong(modifyUser)) {
+        if (comment == null || comment.getCreater() != Long.parseLong(modifyUser)) {
             return false;
         }
         comment.updateComment(content);

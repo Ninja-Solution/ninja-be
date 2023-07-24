@@ -16,6 +16,8 @@ public class Comment extends BaseEntity {
     @Column(name = "comment_id")
     private long id;
     private String content;
+    private Long creater;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
@@ -23,9 +25,10 @@ public class Comment extends BaseEntity {
     private Board board;
 
     @Builder
-    public Comment(long id, String content, Board board) {
+    public Comment(long id, String content, Long creater, Board board) {
         this.id = id;
         this.content = content;
+        this.creater = creater;
         this.board = board;
     }
 
