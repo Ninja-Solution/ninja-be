@@ -29,21 +29,18 @@ public class BoardService {
 
     public boolean deleteById(long id, String deleteUser) {
         Board board = boardRepository.findById(id);
-        if (board == null) {
-            return false;
-        }
-        User user = userRepository.findByUsername(board.getCreatedBy());
-        if (user.getId() != Long.parseLong(deleteUser)) {
+        if (board == null || board.getCreater() != Long.parseLong(deleteUser)) {
             return false;
         }
         boardRepository.deleteById(id);
         return true;
     }
 
-    public void save(BoardForm boardForm) {
+    public void save(BoardForm boardForm, long creater) {
         Board board = Board.builder()
                 .title(boardForm.getTitle())
                 .content(boardForm.getContent())
+                .creater(creater)
                 .build();
         boardRepository.save(board);
     }
@@ -51,11 +48,7 @@ public class BoardService {
     @Transactional
     public boolean update(long id, String modifyUser, BoardForm boardForm) {
         Board board = boardRepository.findById(id);
-        if (board == null) {
-            return false;
-        }
-        User user = userRepository.findByUsername(board.getCreatedBy());
-        if (user.getId() != Long.parseLong(modifyUser)) {
+        if (board == null || board.getCreater() != Long.parseLong(modifyUser)) {
             return false;
         }
         board.updateBoard(boardForm.getTitle(), boardForm.getContent());
@@ -63,13 +56,14 @@ public class BoardService {
     }
 
     @Transactional
-    public boolean addComment(long id, CommentForm commentForm) {
+    public boolean addComment(long id, CommentForm commentForm, long creater) {
         Board updateBoard = boardRepository.findCommentById(id);
         if (updateBoard == null) {
             return false;
         }
         updateBoard.addComment(Comment.builder()
                 .content(commentForm.getContent())
+                .creater(creater)
                 .build());
         return true;
     }

@@ -49,9 +49,10 @@ public class BoardController {
             @ApiResponse(responseCode = "200", description = "게시판 생성 성공", content = @Content(schema = @Schema(implementation = Long.class))),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = Error.class)))
     })
+
     @PostMapping("/create")
-    public ResponseEntity<String> createBoard(@RequestBody BoardForm boardForm) {
-        boardService.save(boardForm);
+    public ResponseEntity<String> createBoard(@RequestBody BoardForm boardForm, @AuthenticationPrincipal String userId) {
+        boardService.save(boardForm, Long.parseLong(userId));
         return ResponseEntity.ok("success");
     }
 
@@ -97,8 +98,8 @@ public class BoardController {
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = Error.class)))
     })
     @PutMapping("/{id}/comment")
-    public ResponseEntity<String> updateBoard(@PathVariable("id") long id, @RequestBody CommentForm comment) {
-        if (!boardService.addComment(id, comment)) {
+    public ResponseEntity<String> updateBoard(@PathVariable("id") long id, @RequestBody CommentForm comment, @AuthenticationPrincipal String creater) {
+        if (!boardService.addComment(id, comment, Long.parseLong(creater))) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().build();

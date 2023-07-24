@@ -19,15 +19,17 @@ public class Board extends BaseEntity {
     private long id;
     private String title;
     private String content;
+    private Long creater;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Comment> comment;
 
     @Builder
-    public Board(long id, String title, String content, List<Comment> comment) {
+    public Board(long id, String title, String content, Long creater, List<Comment> comment) {
         this.id = id;
         this.title = title;
         this.content = content;
+        this.creater = creater;
         this.comment = comment;
     }
 
