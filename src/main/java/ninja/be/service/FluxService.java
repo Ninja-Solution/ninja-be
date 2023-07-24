@@ -15,9 +15,9 @@ public class FluxService {
     private final Map<String, FluxSink<Object>> fluxSinkMap = new HashMap<>();
 
     public Flux<Object> subscribe(String key) {
-        return Flux.create(emitter -> {
-            fluxSinkMap.put(key, emitter);
-            emitter.onDispose(() -> fluxSinkMap.remove(key));
+        return Flux.create(flux -> {
+            fluxSinkMap.put(key, flux);
+            flux.onDispose(() -> fluxSinkMap.remove(key));
         });
     }
 
